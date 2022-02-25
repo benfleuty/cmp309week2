@@ -89,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="1\n" />
 
                     <Button
@@ -97,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="2\nABC" />
 
                     <Button
@@ -105,6 +107,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="3\nDEF" />
                 </LinearLayout>
 
@@ -120,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="4\nGHI" />
 
                     <Button
@@ -128,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="5\nJKL" />
 
                     <Button
@@ -136,6 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="6\nMNO" />
 
                 </LinearLayout>
@@ -152,6 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="7\nPQRS" />
 
                     <Button
@@ -160,6 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="8\nTUV" />
 
                     <Button
@@ -168,6 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="9\nWXYZ" />
 
                 </LinearLayout>
@@ -184,6 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="*\n" />
 
                     <Button
@@ -192,6 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="0\n+" />
 
                     <Button
@@ -200,6 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:onClick="onKeyPadButtonPress"
                         android:text="#\n" />
                 </LinearLayout>
 
@@ -222,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:onClick="onKeyPadButtonPress"
                     android:text="Message" />
 
                 <Button
@@ -230,6 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:onClick="onKeyPadButtonPress"
                     android:text="Call" />
             </LinearLayout>
 
