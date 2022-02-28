@@ -38,7 +38,7 @@
     <LinearLayout
         android:id="@+id/linearKeypadContainer"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
@@ -221,6 +221,22 @@
                 android:tag="call"
                 android:text="Call" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearColourButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnColourClickMe"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:tag="colour"
+                android:text="Click me and I will change colour" />
+        </LinearLayout>
+
     </LinearLayout>
 
 
