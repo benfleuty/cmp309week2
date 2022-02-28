@@ -2,6 +2,7 @@ package uk.ac.abertay.uiandinput;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,42 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public boolean onTouchEvent(MotionEvent event) {
         changeBackgroundColour(event);
         return false;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        final int volDownBtn = 25;
+        final int volUpBtn = 24;
+        // only continue if the pressed buttons are vol up/down
+        switch (keyCode) {
+            case volDownBtn:
+            case volUpBtn:
+                break;
+            default:
+                return false;
+        }
+
+        if (keyCode == volDownBtn)
+            turnBrightnessDown();
+        else turnBrightnessUp();
+
+        Toaster("Brightness is now " + hsv[2]);
+        findViewById(R.id.rootLayout).setBackgroundColor(Color.HSVToColor(hsv));
+        return true;
+    }
+
+    private void turnBrightnessUp() {
+        float current = hsv[2];
+        float newVal = current + 10;
+        if(newVal > 100) newVal = 100;
+        hsv[2] = newVal;
+    }
+
+    private void turnBrightnessDown() {
+        float current = hsv[2];
+        float newVal = current - 10;
+        if(newVal < 0) newVal = 0;
+        hsv[2] = newVal;
     }
 
     private void bindEvents() {
