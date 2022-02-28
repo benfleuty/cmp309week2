@@ -4,17 +4,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     float[] hsv = new float[3];
     Toast last_toast;
     View thisActivity;
+
+    private int moveLastVal = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity  {
         hsv[2] = 1.0f; // Value
 
         thisActivity = findViewById(R.id.rootLayout);
+        bindEvents();
     }
 
     @Override
@@ -33,16 +35,10 @@ public class MainActivity extends AppCompatActivity  {
         return false;
     }
 
-    public void changeBackgroundColour(MotionEvent event) {
-        View layoutRef = findViewById(R.id.rootLayout); 
-        float eventX = event.getX();
-        float eventY = event.getY();
-        float height = layoutRef.getHeight(); // make sure the ref is declared and initialised (this is a reference to your root layout)
-        float width = layoutRef.getWidth();
-        hsv[0] = eventY / height * 360; // (0 to 360)
-        hsv[1] = eventX / width + 0.1f; // (0.1 to 1)
-        layoutRef.setBackgroundColor(Color.HSVToColor(hsv));
-        Toaster(Float.toString(eventX));
+    private void bindEvents() {
+        // bind onTouchListener to colour button
+        Button colourBtn = findViewById(R.id.btnColourClickMe);
+        colourBtn.setOnTouchListener(MainActivity.this);
     }
 
     public void onKeyPadButtonPress(View view) {
@@ -125,5 +121,60 @@ public class MainActivity extends AppCompatActivity  {
                 break;
         }
 
+    }
+
+    public void changeBackgroundColour(MotionEvent event) {
+        View layoutRef = findViewById(R.id.rootLayout);
+        float eventX = event.getX();
+        float eventY = event.getY();
+        float height = layoutRef.getHeight(); // make sure the ref is declared and initialised (this is a reference to your root layout)
+        float width = layoutRef.getWidth();
+        hsv[0] = eventY / height * 360; // (0 to 360)
+        hsv[1] = eventX / width + 0.1f; // (0.1 to 1)
+        layoutRef.setBackgroundColor(Color.HSVToColor(hsv));
+        Toaster(Float.toString(eventX));
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view.getId() == R.id.btnColourClickMe)
+            handleColourButtonClick(motionEvent);
+
+        return false;
+    }
+
+    private void handleColourButtonClick(MotionEvent motionEvent) {
+        Button btn = findViewById(R.id.btnColourClickMe);
+        int green = Color.parseColor("#00ff00");
+        int red = Color.parseColor("#ff0000");
+        int yellow = Color.parseColor("#ffff00");
+        // Move sens calculation to prevent constant firing
+        // https://stackoverflow.com/questions/12328867/motionevent-action-move-keeps-firing-x-and-y-even-if-not-moved
+
+        int moveNewVal = (int) (motionEvent.getX() + motionEvent.getY());
+
+        // if the action is move and the difference in position is more than 50 then cease processing
+        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && Math.abs(moveLastVal - moveNewVal) < 50) {
+            return;
+        }
+        moveLastVal = moveNewVal;
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Toaster("Down changes the button colour to GREEN");
+                btn.setBackgroundColor(green);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Toaster("Move changes the button colour to RED");
+                btn.setBackgroundColor(red);
+                break;
+            case MotionEvent.ACTION_UP:
+                Toaster("Up changes the button colour to YELLOW");
+                btn.setBackgroundColor(yellow);
+                break;
+            default:
+                Toaster("Unsupported MotionEvent!");
+
+        }
     }
 }

@@ -234,7 +234,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:tag="colour"
-                android:text="Click me and I will change colour" />
+                android:text="Press, drag, or release me and I will change colour" />
         </LinearLayout>
 
     </LinearLayout>
