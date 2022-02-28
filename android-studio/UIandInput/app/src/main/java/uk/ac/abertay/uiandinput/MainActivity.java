@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void turnBrightnessUp() {
         float current = hsv[2];
-        float newVal = current + 10;
-        if(newVal > 100) newVal = 100;
+        float newVal = current + 0.1f;
+        if(newVal > 1) newVal = 1;
         hsv[2] = newVal;
     }
 
     private void turnBrightnessDown() {
         float current = hsv[2];
-        float newVal = current - 10;
+        float newVal = current - 0.1f;
         if(newVal < 0) newVal = 0;
         hsv[2] = newVal;
     }
