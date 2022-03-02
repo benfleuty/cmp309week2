@@ -9,25 +9,74 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     float[] hsv = new float[3];
-    Toast last_toast;
+    Toast lastToast;
     View thisActivity;
 
     private int moveLastVal = -1;
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("btnColour_LastColour", findViewById(R.id.btnColourClickMe).getTag().toString());
+        outState.putFloatArray("background_LastColour", hsv);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        hsv[0] = 0.0f; // Hue
-        hsv[1] = 0.0f; // Saturation
-        hsv[2] = 1.0f; // Value
+
+        if (savedInstanceState != null) restoreInstance(savedInstanceState);
+        else setNewInstance();
 
         thisActivity = findViewById(R.id.rootLayout);
         bindEvents();
+    }
+
+    private void restoreInstance(Bundle instance) {
+        restoreLayoutBackground(instance);
+        restoreColourButtonBackground(instance);
+    }
+
+    private void restoreColourButtonBackground(Bundle instance) {
+        String newBtnColour = instance.getString("btnColour_LastColour");
+        if (newBtnColour.charAt(0) == '#') {
+            Button btn = findViewById(R.id.btnColourClickMe);
+            btn.setBackgroundColor(Color.parseColor(newBtnColour));
+            btn.setTag(newBtnColour);
+        }
+    }
+
+    private void restoreLayoutBackground(Bundle instance) {
+        float[] newHsv = instance.getFloatArray("background_LastColour");
+        if (newHsv != null) {
+            hsv[0] = newHsv[0];
+            hsv[1] = newHsv[1];
+            hsv[2] = newHsv[2];
+        } else {
+            hsv[0] = 0.0f;
+            hsv[1] = 0.0f;
+            hsv[2] = 1.0f;
+        }
+
+        findViewById(R.id.rootLayout).setBackgroundColor(Color.HSVToColor(hsv));
+    }
+
+
+    private void setNewInstance() {
+        hsv[0] = 0.0f; // Hue
+        hsv[1] = 0.0f; // Saturation
+        hsv[2] = 1.0f; // Value
     }
 
     @Override
@@ -105,6 +154,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Toaster(text, 0, true);
     }
 
+
+    private void Toaster(int text) {
+        Toaster(String.valueOf(text), 0, true);
+    }
+
     private void Toaster(String text, boolean cancel) {
         Toaster(text, 0, cancel);
     }
@@ -117,12 +171,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Toast new_toast = Toast.makeText(this, text, duration);
         // if a toast has been shown before
         // cancel so that the new toast can be shown
-        if (cancel && last_toast != null) {
-            last_toast.cancel();
+        if (cancel && lastToast != null) {
+            lastToast.cancel();
         }
 
         new_toast.show();
-        last_toast = new_toast;
+        lastToast = new_toast;
     }
 
     private void ApplyActionTo_txtPhoneNumber(String tag, EditText txtPhoneNumber) {
@@ -182,9 +236,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void handleColourButtonClick(MotionEvent motionEvent) {
         Button btn = findViewById(R.id.btnColourClickMe);
-        int green = Color.parseColor("#00ff00");
-        int red = Color.parseColor("#ff0000");
-        int yellow = Color.parseColor("#ffff00");
+
+        String sGreen = "#00ff00";
+        String sRed = "#ff0000";
+        String sYellow = "#ffff00";
+
+        int green = Color.parseColor(sGreen);
+        int red = Color.parseColor(sRed);
+        int yellow = Color.parseColor(sYellow);
         // Move sens calculation to prevent constant firing
         // https://stackoverflow.com/questions/12328867/motionevent-action-move-keeps-firing-x-and-y-even-if-not-moved
 
@@ -196,22 +255,30 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
         moveLastVal = moveNewVal;
 
+        int iNewColour = -1;
+        String sNewColour = null;
+
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Toaster("Down changes the button colour to GREEN");
-                btn.setBackgroundColor(green);
+                iNewColour = green;
+                sNewColour = sGreen;
                 break;
             case MotionEvent.ACTION_MOVE:
-                Toaster("Move changes the button colour to RED");
-                btn.setBackgroundColor(red);
+                iNewColour = red;
+                sNewColour = sRed;
                 break;
             case MotionEvent.ACTION_UP:
-                Toaster("Up changes the button colour to YELLOW");
-                btn.setBackgroundColor(yellow);
+                iNewColour = yellow;
+                sNewColour = sYellow;
                 break;
             default:
                 Toaster("Unsupported MotionEvent!");
 
         }
+
+        if (iNewColour == -1) return;
+
+        btn.setBackgroundColor(iNewColour);
+        btn.setTag(sNewColour);
     }
 }
